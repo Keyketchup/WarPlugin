@@ -10,12 +10,14 @@ public class Team {
 	public String name;
 	public String founderName;
 	public UUID founderUUID;
-	public ArrayList<UUID> playerUUIDs = new ArrayList<UUID>();
+	public ArrayList<UUID> playerUUIDs;
 	
 	public Team(String _name, Player _founderPlayer) {
 		name = _name;
 		founderName = _founderPlayer.getName();
 		founderUUID = _founderPlayer.getUniqueId();
+		playerUUIDs = new ArrayList<UUID>();
+		playerUUIDs.add(founderUUID);
 	}
 	
 }
