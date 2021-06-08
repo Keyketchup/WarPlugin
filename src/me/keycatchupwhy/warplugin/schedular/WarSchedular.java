@@ -10,9 +10,7 @@ public class WarSchedular {
 	public static WarStatus warStatus;
 	public static Boolean isPaused;
 	public static int schedularId;
-	public static int count;
-	
-	public static int speed = 1200;
+	public static int timeLeft;
 	
 	public static void StartSchedule() {
 		
@@ -22,15 +20,15 @@ public class WarSchedular {
             	public void run() {
             		
             		if(!isPaused || warStatus == WarStatus.NONE) {
-            			count ++;
+            			timeLeft--;
             		}
-            		if(warStatus == WarStatus.READY && count == 6) {
+            		if(warStatus == WarStatus.READY && timeLeft <= 0) {
             			StartCommunicate();
             		}
-            		if(warStatus == WarStatus.COMMUNICATE && count == 8) {
+            		if(warStatus == WarStatus.COMMUNICATE && timeLeft <= 0) {
             			StartWar();
             		}
-            		if(warStatus == WarStatus.WAR && count == 11) {
+            		if(warStatus == WarStatus.WAR && timeLeft <= 0) {
             			AfterWar();
             		}
             		
@@ -38,7 +36,7 @@ public class WarSchedular {
 
 			},
 				
-       0L,5L*speed);
+       0L,20);
 		
 	}
 	
@@ -51,23 +49,25 @@ public class WarSchedular {
 	public static void DeclareWar() {
 		Bukkit.broadcastMessage(ChatColor.RED + "40분 후에 국가 간의 전쟁시간이 시작됩니다! 준비하세요 [준비시간 30분]");
 		warStatus = WarStatus.READY;
-		count = 0;
+		timeLeft = 30 * 60;
 	}
 	
 	public static void StartCommunicate() {
 		Bukkit.broadcastMessage(ChatColor.RED + "남은 10분동안 동료들과 서로 전략을 상의하세요 [회의시간 10분]");
 		warStatus = WarStatus.COMMUNICATE;
+		timeLeft = 10*60;
 	}
 	
 	public static void StartWar() {
 		Bukkit.broadcastMessage(ChatColor.RED + "전쟁이 시작됩니다, 자신의 국가를 지키거나 다른 국가를 공격하세요! [전생시간 15분]");
 		warStatus = WarStatus.WAR;
+		timeLeft = 15*60;
 	}
 	
 	public static void AfterWar() {
 		Bukkit.broadcastMessage(ChatColor.RED + "전쟁이 끝났습니다, 각자 진영으로 돌아가세요");
 		warStatus = WarStatus.NONE;
-		count = 0;
+		timeLeft = 0;
 	}
 	
 }

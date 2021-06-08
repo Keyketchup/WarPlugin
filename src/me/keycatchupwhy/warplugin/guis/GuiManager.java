@@ -45,13 +45,21 @@ public class GuiManager {
 				itemstack2 = new ItemStack(Material.BARRIER, 1);
 				ItemMeta meta2 = itemstack2.getItemMeta();
 				meta2.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-				meta2.setDisplayName("전쟁 중단하기");
+				meta2.setDisplayName("전쟁 멈추기");
 				itemstack2.setItemMeta(meta2);
 			}
 		}
 		
 		
 		inventory.setItem(5, itemstack2);
+		
+		ItemStack itemstack3 = new ItemStack(Material.BLAZE_ROD, 1);
+		ItemMeta meta3 = itemstack3.getItemMeta();
+		meta3.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+		meta3.setDisplayName("전쟁까지 남은 시간");
+		itemstack3.setItemMeta(meta3);
+		
+		inventory.setItem(4, itemstack3);
 		
 		player.openInventory(inventory);
 		

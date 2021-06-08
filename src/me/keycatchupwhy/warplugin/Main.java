@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.keycatchupwhy.warplugin.commands.ChangeSpeedCommand;
 import me.keycatchupwhy.warplugin.commands.CheckTeamCommand;
 import me.keycatchupwhy.warplugin.commands.JoinTeamCommand;
 import me.keycatchupwhy.warplugin.commands.ListTeamCommand;
@@ -25,7 +24,6 @@ public class Main extends JavaPlugin {
 		this.getCommand("jointeam").setExecutor(new JoinTeamCommand());
 		this.getCommand("checkteam").setExecutor(new CheckTeamCommand());
 		this.getCommand("warmanager").setExecutor(new WarManagerCommand());
-		this.getCommand("changespeed").setExecutor(new ChangeSpeedCommand());
 		
 		WarSchedular.warStatus = WarStatus.NONE;
 		WarSchedular.isPaused = true;
