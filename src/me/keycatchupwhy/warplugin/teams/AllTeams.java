@@ -2,6 +2,8 @@ package me.keycatchupwhy.warplugin.teams;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.entity.Player;
 
 public class AllTeams {
@@ -48,14 +50,54 @@ public class AllTeams {
 	
 	public static void CheckTeam(Player player) {
 		
-		for(int i=0; i<allTeams.size(); i++) {
-			if(allTeams.get(i).playerUUIDs.contains(player.getUniqueId())) {
-				player.sendMessage("당신이 소속되어 있는 국가은 " + allTeams.get(i).name + " 입니다");
-				return;
-			}
+		Team team = FindTeam(player);
+		if(team != null) {
+			
+			player.sendMessage("당신이 소속되어 있는 국가은 " + team.name + " 입니다");
+			return;
+		
 		}
 		
 		player.sendMessage("소속된 국가가 없습니다");
+		
+	}
+	
+	@Nullable
+	public static Team FindOwnersTeam(Player player) {
+		
+		for(int i=0; i<allTeams.size(); i++) {
+			if(allTeams.get(i).founderUUID == player.getUniqueId()) {
+				return allTeams.get(i);
+			}
+		}
+		
+		return null;
+		
+	}
+	
+	@Nullable
+	public static Team FindTeam(Player player) {
+		
+		for(int i=0; i<allTeams.size(); i++) {
+			if(allTeams.get(i).playerUUIDs.contains(player.getUniqueId())) {
+				return allTeams.get(i);
+			}
+		}
+		
+		return null;
+		
+	}
+	
+	@Nullable
+	public static Team FindTeam(String name) {
+		
+		for(int i=0; i<allTeams.size(); i++) {
+			if(allTeams.get(i).name == name) {
+				return allTeams.get(i);
+			}
+		}
+		
+		return null;
 		
 	}
 	
