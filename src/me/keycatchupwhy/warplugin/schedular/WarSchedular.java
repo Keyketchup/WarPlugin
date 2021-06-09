@@ -2,8 +2,11 @@ package me.keycatchupwhy.warplugin.schedular;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import me.keycatchupwhy.warplugin.Main;
+import me.keycatchupwhy.warplugin.NetherBoardsManager;
+import me.keycatchupwhy.warplugin.teams.AllTeams;
 
 public class WarSchedular {
 	
@@ -18,6 +21,9 @@ public class WarSchedular {
 
             	@Override
             	public void run() {
+            		for(int i=0; i<AllTeams.allTeams.size(); i++) {
+            			NetherBoardsManager.SetBoard(AllTeams.allTeams.get(i));
+            		}
             		
             		if(!isPaused || warStatus == WarStatus.NONE) {
             			timeLeft--;
@@ -50,6 +56,8 @@ public class WarSchedular {
 		Bukkit.broadcastMessage(ChatColor.RED + "40분 후에 국가 간의 전쟁시간이 시작됩니다! 준비하세요 [준비시간 30분]");
 		warStatus = WarStatus.READY;
 		timeLeft = 30 * 60;
+		AllTeams.ResetAllDeaths();
+		AllTeams.ResetAllKills();
 	}
 	
 	public static void StartCommunicate() {

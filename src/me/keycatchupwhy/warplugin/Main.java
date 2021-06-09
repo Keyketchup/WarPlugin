@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import me.keycatchupwhy.warplugin.commands.CheckTeamCommand;
 import me.keycatchupwhy.warplugin.commands.JoinTeamCommand;
+import me.keycatchupwhy.warplugin.commands.KickTeamCommand;
 import me.keycatchupwhy.warplugin.commands.ListTeamCommand;
 import me.keycatchupwhy.warplugin.commands.MakeTeamCommand;
 import me.keycatchupwhy.warplugin.commands.WarManagerCommand;
@@ -17,17 +18,20 @@ public class Main extends JavaPlugin {
 	public static Plugin instance;
 	
 	public void onEnable() {
+		
 		instance = this;
 		Bukkit.getServer().getPluginManager().registerEvents(new AllEvents(), this);
 		this.getCommand("maketeam").setExecutor(new MakeTeamCommand());
 		this.getCommand("listteam").setExecutor(new ListTeamCommand());
 		this.getCommand("jointeam").setExecutor(new JoinTeamCommand());
 		this.getCommand("checkteam").setExecutor(new CheckTeamCommand());
+		this.getCommand("kickteam").setExecutor(new KickTeamCommand());
 		this.getCommand("warmanager").setExecutor(new WarManagerCommand());
 		
 		WarSchedular.warStatus = WarStatus.NONE;
 		WarSchedular.isPaused = true;
 		WarSchedular.StartSchedule();
+		
 	}
 	
 	public void OnDisable() {

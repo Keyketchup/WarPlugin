@@ -23,7 +23,15 @@ public class GuiManager {
 		meta1.setDisplayName("전쟁 시작하기");
 		itemstack1.setItemMeta(meta1);
 		
-		inventory.setItem(3, itemstack1);
+		inventory.setItem(2, itemstack1);
+		
+		ItemStack itemstack3 = new ItemStack(Material.BLAZE_ROD, 1);
+		ItemMeta meta3 = itemstack3.getItemMeta();
+		meta3.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+		meta3.setDisplayName("전쟁까지 남은 시간");
+		itemstack3.setItemMeta(meta3);
+		
+		inventory.setItem(3, itemstack3);
 		
 		ItemStack itemstack2 = null;
 		
@@ -50,16 +58,23 @@ public class GuiManager {
 			}
 		}
 		
+		inventory.setItem(4, itemstack2);
 		
-		inventory.setItem(5, itemstack2);
+		ItemStack itemstack4 = new ItemStack(Material.PAPER, 1);
+		ItemMeta meta4 = itemstack4.getItemMeta();
+		meta4.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+		meta4.setDisplayName("회의 시간으로 스킵하기");
+		itemstack4.setItemMeta(meta4);
 		
-		ItemStack itemstack3 = new ItemStack(Material.BLAZE_ROD, 1);
-		ItemMeta meta3 = itemstack3.getItemMeta();
-		meta3.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-		meta3.setDisplayName("전쟁까지 남은 시간");
-		itemstack3.setItemMeta(meta3);
+		inventory.setItem(6, itemstack4);
 		
-		inventory.setItem(4, itemstack3);
+		ItemStack itemstack5 = new ItemStack(Material.DIAMOND_SWORD, 1);
+		ItemMeta meta5 = itemstack5.getItemMeta();
+		meta5.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+		meta5.setDisplayName("전쟁 시간으로 스킵하기");
+		itemstack5.setItemMeta(meta5);
+		
+		inventory.setItem(7, itemstack5);
 		
 		player.openInventory(inventory);
 		

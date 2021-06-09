@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class AllTeams {
@@ -15,10 +16,6 @@ public class AllTeams {
 		for(int i=0; i<allTeams.size(); i++) {
 			if(allTeams.get(i).name.toLowerCase() == team.name.toLowerCase()) {
 				player.sendMessage("똑같은 이름의 국가가 이미 존재합니다");
-				return;
-			}
-			if(allTeams.get(i).founderUUID == team.founderUUID) {
-				player.sendMessage("이미 국가을 보유하고 있습니다");
 				return;
 			}
 		}
@@ -98,6 +95,33 @@ public class AllTeams {
 		}
 		
 		return null;
+		
+	}
+	
+	public static void SendTeamMessage(Team team, String message) {
+		
+		for(int i=0; i<team.playerUUIDs.size(); i++) {
+			if(Bukkit.getPlayer(team.playerUUIDs.get(i)) != null) {
+				Player player = Bukkit.getPlayer(team.playerUUIDs.get(i));
+				player.sendMessage("[Team]: " + message);
+			}
+		}
+		
+	}
+	
+	public static void ResetAllDeaths() {
+		
+		for(int i=0; i<allTeams.size(); i++) {
+			allTeams.get(i).teamDeaths = 0;
+		}
+		
+	}
+	
+	public static void ResetAllKills() {
+		
+		for(int i=0; i<allTeams.size(); i++) {
+			allTeams.get(i).teamKills = 0;
+		}
 		
 	}
 	

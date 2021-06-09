@@ -12,12 +12,19 @@ public class Team {
 	public UUID founderUUID;
 	public ArrayList<UUID> playerUUIDs;
 	
+	public int points;
+	public int teamDeaths;
+	public int teamKills;
+	
 	public Team(String _name, Player _founderPlayer) {
+		
 		name = _name;
 		founderName = _founderPlayer.getName();
 		founderUUID = _founderPlayer.getUniqueId();
 		playerUUIDs = new ArrayList<UUID>();
 		playerUUIDs.add(founderUUID);
+		points = 10000;
+		
 	}
 	
 }

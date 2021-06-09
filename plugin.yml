@@ -1,7 +1,8 @@
 name: WarPlugin
 main: me.keycatchupwhy.warplugin.Main
 version: 1.0
-api-version: 1.12
+api-version: 1.16
+softdepend: ['Multiverse-Core']
 commands:
    makeTeam:
       description: Make your own team
@@ -13,8 +14,11 @@ commands:
       description: List all teams
       usage: /listteam
    checkTeam:
-      description: List all teams
-      usage: /listteam
+      description: Check what team you are in
+      usage: /checkTeam
+   kickTeam:
+      description: Kick player
+      usage: /kickTeam <player>
    warmanager:
       description: Show a war manager ui
       usage: /warmanager
