@@ -9,12 +9,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
+import me.keycatchupwhy.warplugin.castles.Castle;
 import me.keycatchupwhy.warplugin.guis.GuiManager;
 import me.keycatchupwhy.warplugin.schedular.WarSchedular;
 import me.keycatchupwhy.warplugin.schedular.WarStatus;
@@ -23,7 +28,6 @@ import me.keycatchupwhy.warplugin.teams.Team;
 
 public class AllEvents implements Listener {
 	
-	MultiverseCore core = (MultiverseCore) Bukkit.getServer().getPluginManager().getPlugin("Multiverse-Core");
 	GuiManager guiManager = new GuiManager();
 	
 	@EventHandler
@@ -47,25 +51,48 @@ public class AllEvents implements Listener {
 				}
 				else if (ev.getCurrentItem().getType() == Material.DIAMOND_SWORD) {
 					WarSchedular.StartWar();
-					Bukkit.broadcastMessage(ChatColor.YELLOW + "(전쟁을 즉시 시작하였습니다, 잘못 누르셨다면 재빨리 전쟁을 멈줘주세요");
+					ev.getWhoClicked().sendMessage(ChatColor.YELLOW + "전쟁을 즉시 시작하였습니다, 잘못 누르셨다면 재빨리 전쟁을 멈줘주세요");
 				}
 				else if (ev.getCurrentItem().getType() == Material.PAPER) {
 					WarSchedular.StartCommunicate();
-					Bukkit.broadcastMessage(ChatColor.YELLOW + "(회의 시간을 즉시 시작하였습니다, 잘못 누르셨다면 재빨리 전쟁을 멈줘주세요");
-				}
-				else if (ev.getCurrentItem().getType() == Material.BLAZE_ROD) {
-					if(WarSchedular.warStatus == WarStatus.NONE) {
-						ev.getWhoClicked().sendMessage(ChatColor.YELLOW + "진행중인 전쟁이 없습니다, 나중에 다시 시도해 주십시오");
-					} else if(WarSchedular.isPaused) {
-						ev.getWhoClicked().sendMessage(ChatColor.YELLOW + "전쟁이 중단되어 있습니다, 전쟁을 계속하기 위해서는 '전쟁 계속하기'를 눌러주세요");
-					} else {
-						ev.getWhoClicked().sendMessage(ChatColor.YELLOW + "다음 이벤트까지 " + WarSchedular.timeLeft/60 + "분 " + WarSchedular.timeLeft%60 + "초가 남았습니다");
-					}
+					ev.getWhoClicked().sendMessage(ChatColor.YELLOW + "회의 시간을 즉시 시작하였습니다, 잘못 누르셨다면 재빨리 전쟁을 멈줘주세요");
 				}
 				ev.getView().close();
 			}
 		}
 		
+		//CastleUI
+		if(ev.getView().getTitle() == "Castle Manager") {
+			ev.setCancelled(true);
+			if(ev.getCurrentItem().containsEnchantment(Enchantment.ARROW_INFINITE)) {
+				if(ev.getCurrentItem().getType() == Material.ANVIL) {
+					Team team = AllTeams.FindTeam((Player)ev.getWhoClicked());
+					if(!team.hasCastle) {
+						MultiverseWorld mvWorld = Main.core.getMVWorldManager().getMVWorld(ev.getWhoClicked().getWorld());
+						Castle castle = AllWorlds.getCastle(mvWorld);
+						castle.team = team;
+						team.hasCastle = true;
+						ev.getWhoClicked().sendMessage("성을 성공적으로 차지하였습니다");
+					} else {
+						ev.getWhoClicked().sendMessage("이미 성이 있습니다");
+					}
+				}
+				if(ev.getCurrentItem().getType() == Material.BARRIER) {
+					Team team = AllTeams.FindTeam((Player)ev.getWhoClicked());
+					if(!team.hasCastle) {
+						MultiverseWorld mvWorld = Main.core.getMVWorldManager().getMVWorld(ev.getWhoClicked().getWorld());
+						Castle castle = AllWorlds.getCastle(mvWorld);
+						if(castle != null) {
+							if(castle.team == team) {
+								castle.team = null;
+								ev.getWhoClicked().sendMessage("성의 소유권을 성공적으로 박탈하였습니다");
+							}
+						}
+					}
+				}
+				ev.getView().close();
+			}
+		}
 	}
 	
 	@EventHandler
@@ -112,6 +139,54 @@ public class AllEvents implements Listener {
 			}
 		}
 		
+	}
+	
+	@EventHandler
+    public void onTeleport(PlayerTeleportEvent ev){
+        if(ev.getCause() == TeleportCause.ENDER_PEARL){
+            ev.setCancelled(true);
+        }
+    }
+	
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent ev) {
+		Player player = ev.getPlayer();
+		MultiverseWorld mvWorld = Main.core.getMVWorldManager().getMVWorld(player.getWorld());
+		Castle castle = AllWorlds.getCastle(mvWorld);
+		if(ev.getPlayer().getGameMode() == GameMode.CREATIVE) {
+			return;
+		}
+		if(castle != null) {
+			if(castle.allowableBlocks.contains(ev.getBlock())) {
+				castle.allowableBlocks.remove(ev.getBlock());
+				return;
+			}
+		} else {
+			player.sendMessage("여기에는 블럭을 부실 수 없습니다");
+		}
+		ev.setCancelled(true);
+		
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent ev) {
+		Player player = ev.getPlayer();
+		MultiverseWorld mvWorld = Main.core.getMVWorldManager().getMVWorld(player.getWorld());
+		Castle castle = AllWorlds.getCastle(mvWorld);
+		if(ev.getPlayer().getGameMode() == GameMode.CREATIVE) {
+			return;
+		}
+		if(castle != null) {
+			if(castle.team == AllTeams.FindTeam(player) || WarSchedular.warStatus == WarStatus.WAR) {
+				castle.allowableBlocks.add(ev.getBlock());
+				return;
+			} else {
+				player.sendMessage("여기에는 블럭을 설치할 수 없습니다");
+			}
+		} else {
+			player.sendMessage("여기에는 블럭을 설치할 수 없습니다");
+		}
+		ev.setCancelled(true);
 	}
 	
 	/*

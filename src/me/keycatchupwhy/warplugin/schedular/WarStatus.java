@@ -2,10 +2,10 @@ package me.keycatchupwhy.warplugin.schedular;
 
 public enum WarStatus {
 	
-	NONE("아무런 전쟁이 없음"),
-    READY("전쟁 준비시간"),
-    COMMUNICATE("회의 시간"),
-    WAR("전쟁 중");
+	NONE("전쟁 중이 아님"),
+    READY("전쟁 준비 시간"),
+    COMMUNICATE("전쟁 회의 시간"),
+    WAR("전쟁 시간");
     
     String name;
     

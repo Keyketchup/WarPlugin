@@ -1,0 +1,30 @@
+package me.keycatchupwhy.warplugin.castles;
+
+public enum CastleType {
+	
+	GARDEN("²É¹ç"),
+	TAIGA("Å¸ÀÌ±â"),
+	EXTREME("ÀÍ½ºÆ®¸²"),
+	MUSHROOM("¹ö¼¸¼¶"),
+	ICE("¾óÀ½"),
+	OCEAN("¹Ù´Ù"),
+	SWAMP("´ËÁö"),
+	DESERT("»ç¸·"),
+	NETHER("Áö¿Á"),
+	END("¿£µå");
+	
+	public String name;
+	
+	private CastleType(String name) {
+		
+		this.name = name;
+		
+	}
+	
+	public String GetName() {
+		
+		return this.name;
+		
+	}
+	
+}

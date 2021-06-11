@@ -2,7 +2,6 @@ package me.keycatchupwhy.warplugin.schedular;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import me.keycatchupwhy.warplugin.Main;
 import me.keycatchupwhy.warplugin.NetherBoardsManager;
